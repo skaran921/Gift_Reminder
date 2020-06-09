@@ -1,29 +1,46 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gift_reminder/bloc/bloc.dart';
 import 'package:gift_reminder/bloc/events.dart';
 import 'package:gift_reminder/bloc/state.dart';
-import 'package:gift_reminder/config/gift.dart';
+import 'package:gift_reminder/components/customText.dart';
+import 'package:gift_reminder/components/custonAlertBox.dart';
+import 'package:gift_reminder/config/admin_token.dart';
 import 'package:gift_reminder/service/transaction.dart';
+import 'package:lottie/lottie.dart';
 
-class AddTransaction extends StatefulWidget {
-  final GiftAppBloc _giftAppBloc;
+class EditTransaction extends StatefulWidget {
+  final int index;
+  final String transactionId;
+  final String bookId;
+  final String pageNo;
+  final String name;
+  final String fatherName;
+  final String address;
+  final String amount;
+  final String phone;
 
-  const AddTransaction({Key key, @required GiftAppBloc giftAppBloc})
-      : this._giftAppBloc = giftAppBloc,
-        super(key: key);
+  const EditTransaction(
+      {Key key,
+      @required this.transactionId,
+      @required this.bookId,
+      @required this.index,
+      @required this.pageNo,
+      @required this.name,
+      @required this.fatherName,
+      @required this.address,
+      @required this.amount,
+      @required this.phone})
+      : super(key: key);
   @override
-  _AddTransactionState createState() => _AddTransactionState();
+  _EditTransactionState createState() => _EditTransactionState();
 }
 
-class _AddTransactionState extends State<AddTransaction> {
-  final _addTransactionFormKey = GlobalKey<FormState>();
+class _EditTransactionState extends State<EditTransaction> {
+  final _editTransactionFormKey = GlobalKey<FormState>();
 
   // * textControllers
-
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fnameController = TextEditingController();
   TextEditingController _pageNoController = TextEditingController();
@@ -31,71 +48,110 @@ class _AddTransactionState extends State<AddTransaction> {
   TextEditingController _amountController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
 
-  _onAddTransaction(BuildContext ctx) {
-    FocusScope.of(context).unfocus();
+  @override
+  void initState() {
+    super.initState();
+    GiftAppBloc().dispatch(SetBookValueEvent(widget.bookId));
+    _nameController.text = "${widget.name}";
+    _fnameController.text = "${widget.fatherName}";
+    _pageNoController.text = "${widget.pageNo}";
+    _addressController.text = "${widget.address}";
+    _amountController.text = "${widget.amount}";
+    _phoneController.text = "${widget.phone}";
+  }
 
+  Future _onUpdate() async {
+    FocusScope.of(context).unfocus();
     // ***if book value not selected
     if (GiftAppBloc().bookValue.isEmpty) {
-      Scaffold.of(ctx).showSnackBar(SnackBar(
-        content: Text("Please select book number"),
-        backgroundColor: Theme.of(ctx).errorColor,
-      ));
+      CustomAlertBox.showInfoBox(
+          context: context,
+          content: CustomText(text: "Please Select Book No."));
       return;
     }
 
-    if (_addTransactionFormKey.currentState.validate()) {
-      //  insertTransaction
-      Map admin = jsonDecode(Gift.prefs.get(Gift.loginTokenPref));
-
-      TransactionService.insertTransaction(
+    if (_editTransactionFormKey.currentState.validate()) {
+      GiftAppBloc().dispatch(IsUpdateTransactionLoadingEvent(true));
+      _editTransactionFormKey.currentState.save();
+      //  *update transaction
+      await TransactionService.updateTransaction(
+              transactionId: widget.transactionId,
               name: _nameController.text,
               fname: _fnameController.text,
-              amount: _amountController.text.trim(),
-              pageNumber: _pageNoController.text.trim(),
-              bookId: GiftAppBloc().bookValue,
+              amount: _amountController.text,
               address: _addressController.text,
               phone: _phoneController.text,
-              adminId: admin['adminId'])
+              pageNumber: _pageNoController.text,
+              bookId: GiftAppBloc().bookValue,
+              adminId: AdminToken.adminId)
           .then((value) {
         if (value["error"] == "X") {
-          Scaffold.of(ctx).showSnackBar(SnackBar(
-            content: Text("${value["msg"]}"),
-            backgroundColor: Theme.of(ctx).errorColor,
-          ));
+          CustomAlertBox.showInfoBox(
+              context: context,
+              title: "Alert",
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Lottie.asset("assets/images/lottie/error-animation.json",
+                      width: 70, height: 70, fit: BoxFit.contain),
+                  CustomText(text: "${value['msg']}")
+                ],
+              ));
         } else {
-          _nameController.clear();
-          _fnameController.clear();
-          _addressController.clear();
-          _phoneController.clear();
-          _amountController.clear();
-          widget._giftAppBloc
-              .dispatch(AddTransactionDataEvent(value["result"]));
-
-          Scaffold.of(ctx).showSnackBar(SnackBar(
-            content: Text("${value["msg"]}"),
-            backgroundColor: Theme.of(ctx).primaryColor,
-          ));
+          GiftAppBloc().dispatch(UpdateTransactionData(widget.index, {
+            "TRANSACTION_ID": widget.transactionId,
+            "NAME": _nameController.text,
+            "FATHER_NAME": _fnameController.text,
+            "AMOUNT": _amountController.text,
+            "ADDRESS": _addressController.text,
+            "PHONE": _phoneController.text,
+            "PAGE_NUMBER": _pageNoController.text,
+            "BOOK_ID": GiftAppBloc().bookValue,
+            "ADMIN_ID": AdminToken.adminId
+          }));
+          Navigator.pop(context);
+          CustomAlertBox.showInfoBox(
+              context: context,
+              title: "Alert",
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Lottie.asset("assets/images/lottie/success.json",
+                      width: 70, height: 70, fit: BoxFit.contain),
+                  CustomText(text: "${value['msg']}")
+                ],
+              ));
         }
       });
     } else {
-      Scaffold.of(ctx).showSnackBar(SnackBar(
-        content: Text("Please fill required fields"),
-        backgroundColor: Theme.of(ctx).errorColor,
-      ));
+      CustomAlertBox.showInfoBox(
+          context: context,
+          title: "Alert",
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Lottie.asset("assets/images/lottie/error-animation.json",
+                  width: 70, height: 70, fit: BoxFit.contain),
+              CustomText(text: "Please fill all required fields.")
+            ],
+          ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var _bloc = GiftAppBloc();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Trasaction"),
-      ),
-      body: BlocBuilder<GiftAppBloc, GiftAppState>(
-        bloc: _bloc,
-        builder: (context, state) {
-          return SingleChildScrollView(
+    var _giftAppBloc = GiftAppBloc();
+    return BlocBuilder<GiftAppBloc, GiftAppState>(
+      bloc: _giftAppBloc,
+      builder: (context, currentState) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Edit Transaction"),
+          ),
+          body: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
               child: Column(
@@ -107,7 +163,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     ),
                   ),
                   Form(
-                    key: _addTransactionFormKey,
+                    key: _editTransactionFormKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +198,7 @@ class _AddTransactionState extends State<AddTransaction> {
                             print(value);
                             GiftAppBloc().dispatch(SetBookValueEvent(value));
                           },
-                          value: GiftAppBloc().bookValue,
+                          value: widget.bookId,
                         ),
                         SizedBox(
                           height: 10.0,
@@ -157,7 +213,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 child: Icon(Icons.plus_one),
                               )),
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value.trim().length == 0) {
                               return "*Page No. Require";
                             }
                             return null;
@@ -236,25 +292,22 @@ class _AddTransactionState extends State<AddTransaction> {
                         SizedBox(
                           height: 8.0,
                         ),
-                        Center(
-                          child: FlatButton.icon(
-                            color: Theme.of(context).primaryColor,
-                            icon: Icon(Icons.add),
-                            label: Text("Add Transaction"),
-                            onPressed: () {
-                              _onAddTransaction(context);
-                            },
-                          ),
-                        )
                       ],
                     ),
                   )
                 ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            heroTag: "updateBtn",
+            onPressed: () {
+              _onUpdate();
+            },
+            child: Icon(Icons.save),
+          ),
+        );
+      },
     );
   }
 }

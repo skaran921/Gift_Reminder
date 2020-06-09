@@ -37,3 +37,14 @@ class ErrorGiftAppState extends GiftAppState {
     return ErrorGiftAppState(error);
   }
 }
+
+// *************************************InGiftAppDashBoardState****************************
+class InGiftAppDashBoardState extends GiftAppState {
+  InGiftAppDashBoardState();
+  @override
+  String toString() => "InGiftAppDashBoardState";
+  @override
+  GiftAppState getStateCopy() {
+    return InGiftAppDashBoardState();
+  }
+}

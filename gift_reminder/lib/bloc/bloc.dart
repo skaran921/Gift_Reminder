@@ -12,11 +12,27 @@ class GiftAppBloc extends Bloc<GiftAppEvent, GiftAppState> {
 
   GiftAppBloc.internal();
 
-  // var
+  // login page var
   bool isLoginLoading = false;
   bool isLogin = false;
   bool isDarkMode = false;
   String loginError = "";
+
+  // add transaction page var
+  bool isAddTransactionPageLoading = false;
+  String bookValue = "";
+
+  // dashboard page var
+  List allTransaction = [];
+  bool isDashBoardPageLoading = false;
+  bool hasDashBoardPageError = false;
+  bool isRemoveTransactionLoading = false;
+  bool isUpdateTransactionLoading = false;
+  String dashboardPageErrorString = "";
+
+  // edit profile page
+  bool isEditProfileLoading = false;
+
   @override
   GiftAppState get initialState => UnGiftAppState();
 
@@ -26,7 +42,7 @@ class GiftAppBloc extends Bloc<GiftAppEvent, GiftAppState> {
   ) async* {
     try {
       yield UnGiftAppState();
-      await event.applyAsyncEvent(bloc: this, currentState: currentState);
+      yield await event.applyAsyncEvent(bloc: this, currentState: currentState);
     } catch (error) {
       print(error);
       yield ErrorGiftAppState(error);

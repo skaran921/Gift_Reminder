@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gift_reminder/bloc/bloc.dart';
 import 'package:gift_reminder/bloc/events.dart';
+import 'package:gift_reminder/config/admin_token.dart';
 import 'package:gift_reminder/config/gift.dart';
-import 'package:gift_reminder/dashboard/dashboard.dart';
+import 'package:gift_reminder/dashboard/dashboardPage.dart';
 import 'package:gift_reminder/service/login.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key key}) : super(key: key);
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -21,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
     FocusScope.of(context).unfocus();
     if (_loginFormKey.currentState.validate()) {
       _loginFormKey.currentState.save();
-      // await Future.delayed(Duration(seconds: 4));
       LoginService.authenticate(
               email: _emailController.text, password: _passwordController.text)
           .then((value) {
@@ -29,13 +30,20 @@ class _LoginScreenState extends State<LoginScreen> {
           GiftAppBloc().dispatch(SetLoginErrorEvent("${value['msg']}"));
         } else {
           // authenticated user
+          AdminToken.adminId = value['result']["ADMIN_ID"];
+          AdminToken.adminFirstName = value['result']["ADMIN_FIRST_NAME"];
+          AdminToken.adminLastName = value['result']["ADMIN_LAST_NAME"];
+          AdminToken.adminEmail = value['result']["ADMIN_EMAIL"];
+          AdminToken.adminCreateDate = value['result']["ADMIN_CREATE_DATE"];
+          AdminToken.adminUpdateDate = value['result']["ADMIN_UPDATE_DATE"];
+          AdminToken.adminStatus = value['result']["ADMIN_STATUS"];
           var _loginToken =
-              '{user:${value['result']},createDate:${DateTime.now()},expiryDate: ${DateTime.now().add(Duration(days: 7))}}';
+              '{"adminId":"${AdminToken.adminId}","adminFirstName":"${AdminToken.adminFirstName}","adminLastName":"${AdminToken.adminLastName}","adminEmail":"${AdminToken.adminEmail}","adminCreateDate":"${AdminToken.adminCreateDate}","adminUpdateDate":"${AdminToken.adminUpdateDate}","adminStatus":"${AdminToken.adminStatus}","tokenCreateDate":"${DateTime.now()}","tockenExpiryDate": "${DateTime.now().add(Duration(days: 7))}"}';
           Gift.prefs.setString(Gift.loginTokenPref, _loginToken);
           GiftAppBloc().dispatch(SetLoginEvent(true));
           GiftAppBloc().dispatch(SetLoginErrorEvent(""));
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => DashBoard()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => DashboardPage()));
         }
       });
     }

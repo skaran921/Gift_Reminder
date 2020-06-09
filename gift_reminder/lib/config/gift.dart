@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Gift {
@@ -29,4 +30,28 @@ class Gift {
 
   // * userLogin key
   static const String loginTokenPref = "loginTokenPref";
+
+  static const List<Color> colorsList = [
+    Colors.red,
+    Colors.indigo,
+    Colors.indigoAccent,
+    Colors.redAccent,
+    Colors.blue,
+    Colors.blueAccent,
+    Colors.black,
+    Colors.pink,
+    Colors.pinkAccent,
+    Colors.green,
+    Colors.greenAccent,
+    Colors.blueGrey,
+    Colors.teal,
+    Colors.tealAccent,
+    Colors.purple,
+    Colors.purpleAccent,
+    Colors.deepOrange,
+    Colors.orangeAccent,
+    Colors.orange,
+    Colors.deepOrangeAccent,
+    Colors.brown,
+  ];
 }
