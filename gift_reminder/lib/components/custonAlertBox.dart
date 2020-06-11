@@ -16,7 +16,7 @@ class CustomAlertBox {
                 FlatButton.icon(
                     color: Theme.of(context).secondaryHeaderColor,
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, false);
                     },
                     icon: Icon(Icons.close),
                     label: Text('Cancel')),

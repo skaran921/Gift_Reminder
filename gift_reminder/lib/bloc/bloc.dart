@@ -20,7 +20,7 @@ class GiftAppBloc extends Bloc<GiftAppEvent, GiftAppState> {
 
   // add transaction page var
   bool isAddTransactionPageLoading = false;
-  String bookValue = "";
+  String bookValue = "1";
 
   // dashboard page var
   List allTransaction = [];

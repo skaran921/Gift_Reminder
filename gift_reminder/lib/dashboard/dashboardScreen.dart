@@ -47,21 +47,23 @@ class _DashoboardScreenState extends State<DashoboardScreen> {
         bloc: _giftAppBloc,
         builder: (context, currentState) {
           if (currentState is UnGiftAppState) {
-            return Column(
-              children: [
-                ListTileShimmer(
-                  isDisabledButton: true,
-                ),
-                ListTileShimmer(
-                  isDisabledButton: true,
-                ),
-                ListTileShimmer(
-                  isDisabledButton: true,
-                ),
-                ListTileShimmer(
-                  isDisabledButton: true,
-                )
-              ],
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListTileShimmer(
+                    isDisabledButton: true,
+                  ),
+                  ListTileShimmer(
+                    isDisabledButton: true,
+                  ),
+                  ListTileShimmer(
+                    isDisabledButton: true,
+                  ),
+                  ListTileShimmer(
+                    isDisabledButton: true,
+                  )
+                ],
+              ),
             );
           }
 

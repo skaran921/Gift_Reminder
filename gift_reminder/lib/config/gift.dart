@@ -54,4 +54,12 @@ class Gift {
     Colors.deepOrangeAccent,
     Colors.brown,
   ];
+
+  static double getSum(List arr) {
+    double sum = 0;
+    for (int i = 0; i < arr.length; i++) {
+      sum += double.parse(arr[i]['AMOUNT']);
+    }
+    return sum;
+  }
 }

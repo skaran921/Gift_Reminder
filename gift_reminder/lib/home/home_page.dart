@@ -45,8 +45,8 @@ class _GiftAppState extends State<GiftApp> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(6.0))),
                           textTheme: ButtonTextTheme.primary),
-                      textTheme: TextTheme(
-                          bodyText2: TextStyle(color: Color(0xFFABA7C0))),
+                      textTheme:
+                          TextTheme(body2: TextStyle(color: Color(0xFFABA7C0))),
                       appBarTheme: AppBarTheme(
                           color: Color(0xFF4f21d2),
                           actionsIconTheme:

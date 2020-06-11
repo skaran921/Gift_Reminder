@@ -178,7 +178,7 @@ class _EditTransactionState extends State<EditTransaction> {
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .body2
                                         .color),
                               ),
                             ),
@@ -189,7 +189,7 @@ class _EditTransactionState extends State<EditTransaction> {
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .body2
                                         .color),
                               ),
                             )

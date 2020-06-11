@@ -8,7 +8,7 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text("$text",
         style: TextStyle(
-          color: Theme.of(context).textTheme.bodyText2.color,
+          color: Theme.of(context).textTheme.body2.color,
         ));
   }
 }

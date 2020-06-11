@@ -4,6 +4,9 @@ import 'package:gift_reminder/components/customText.dart';
 import 'package:gift_reminder/components/custonAlertBox.dart';
 import 'package:gift_reminder/config/admin_token.dart';
 import 'package:gift_reminder/config/gift.dart';
+import 'package:gift_reminder/dashboard/profile/edit_profile..dart';
+import 'package:gift_reminder/dashboard/transaction/searchTransaction.dart';
+import 'package:gift_reminder/dashboard/transaction/transactions.dart';
 import 'package:gift_reminder/login/login.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -11,6 +14,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
+        padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
             accountEmail: Text(AdminToken.adminEmail),
@@ -28,18 +32,25 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             title: CustomText(text: "Search"),
             trailing: CustomIcon(icon: Icons.search),
+            onTap: () {
+              showSearch(context: context, delegate: SearchTransaction());
+            },
           ),
           Divider(
             thickness: 0.3,
-            color: Theme.of(context).textTheme.bodyText2.color,
+            color: Theme.of(context).textTheme.body2.color,
           ),
           ListTile(
-            title: CustomText(text: "Transaction"),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AllTransactions()));
+            },
+            title: CustomText(text: "All Transactions"),
             trailing: CustomIcon(icon: Icons.library_books),
           ),
           Divider(
             thickness: 0.3,
-            color: Theme.of(context).textTheme.bodyText2.color,
+            color: Theme.of(context).textTheme.body2.color,
           ),
           ListTile(
             title: CustomText(text: "Add Book"),
@@ -47,15 +58,19 @@ class MyDrawer extends StatelessWidget {
           ),
           Divider(
             thickness: 0.3,
-            color: Theme.of(context).textTheme.bodyText2.color,
+            color: Theme.of(context).textTheme.body2.color,
           ),
           ListTile(
             title: CustomText(text: "Edit Profile"),
             trailing: CustomIcon(icon: Icons.edit),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EditProfile()));
+            },
           ),
           Divider(
             thickness: 0.3,
-            color: Theme.of(context).textTheme.bodyText2.color,
+            color: Theme.of(context).textTheme.body2.color,
           ),
           ListTile(
             onTap: () {

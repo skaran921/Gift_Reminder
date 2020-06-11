@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gift_reminder/bloc/bloc.dart';
 import 'package:gift_reminder/bloc/events.dart';
 import 'package:gift_reminder/bloc/state.dart';
+import 'package:gift_reminder/components/custonAlertBox.dart';
 import 'package:gift_reminder/config/gift.dart';
 import 'package:gift_reminder/service/transaction.dart';
 
@@ -26,10 +27,36 @@ class _AddTransactionState extends State<AddTransaction> {
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fnameController = TextEditingController();
-  TextEditingController _pageNoController = TextEditingController();
+  TextEditingController _pageNoController = TextEditingController(text: "1");
   TextEditingController _addressController = TextEditingController();
   TextEditingController _amountController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
+
+  Future<bool> _onWillPop() async {
+    return await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Confirmation"),
+              content: Text("Are you sure you want to leave this page?"),
+              actions: [
+                FlatButton.icon(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    icon: Icon(Icons.close),
+                    label: Text('Close')),
+                FlatButton.icon(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    icon: Icon(Icons.check),
+                    label: Text('Sure'))
+              ],
+            ));
+  }
 
   _onAddTransaction(BuildContext ctx) {
     FocusScope.of(context).unfocus();
@@ -108,6 +135,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                   Form(
                     key: _addTransactionFormKey,
+                    onWillPop: _onWillPop,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +150,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .body2
                                         .color),
                               ),
                             ),
@@ -133,7 +161,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .body2
                                         .color),
                               ),
                             )
@@ -149,7 +177,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         ),
                         TextFormField(
                           controller: _pageNoController,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: false, decimal: false),
                           decoration: InputDecoration(
                               labelText: "Page No.",
                               prefix: Padding(
