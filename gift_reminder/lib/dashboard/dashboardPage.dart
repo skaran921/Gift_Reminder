@@ -4,7 +4,7 @@ import 'package:gift_reminder/bloc/bloc.dart';
 import 'package:gift_reminder/components/custonAlertBox.dart';
 import 'package:gift_reminder/components/drawe.dart';
 import 'package:gift_reminder/config/gift.dart';
-import 'package:gift_reminder/dashboard/addTransaction.dart';
+import 'package:gift_reminder/dashboard/transaction/addTransaction.dart';
 import 'package:gift_reminder/dashboard/dashboardScreen.dart';
 import 'package:gift_reminder/dashboard/profile/profile.dart';
 import 'package:gift_reminder/login/login.dart';

@@ -183,40 +183,42 @@ class _DashBoardState extends State<DashBoard> {
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 6.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                FontAwesomeIcons.rupeeSign,
-                                size: 20.0,
-                              ),
-                              Text(
-                                " ${Gift.getSum(GiftAppBloc().allTransaction)} ",
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).textTheme.body2.color,
-                                    fontSize: 44.0),
-                              ),
-                            ],
+                    Flexible(
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(
+                                  FontAwesomeIcons.rupeeSign,
+                                  size: 20.0,
+                                ),
+                                Container(
+                                  child: Text(
+                                    " ${Gift.getSum(GiftAppBloc().allTransaction)}",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .body2
+                                            .color,
+                                        fontSize: 30.0),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Flexible(
-                          child: Container(
+                          Container(
                             margin: EdgeInsets.only(right: 22.0),
                             child: Lottie.asset(
                                 "assets/images/lottie/23926-freelancers-life.json",
                                 width: 70,
                                 height: 70,
                                 fit: BoxFit.cover),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                     Text(
                       "   Available Balance",
@@ -240,7 +242,7 @@ class _DashBoardState extends State<DashBoard> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 2.0,
+                                  width: 6.0,
                                 ),
                                 Flexible(
                                   child: Text(
@@ -312,7 +314,7 @@ class _DashBoardState extends State<DashBoard> {
               ],
             ),
             Container(
-              height: 400,
+              height: MediaQuery.of(context).size.height - 400,
               child: ListView.builder(
                   primary: false,
                   itemCount: GiftAppBloc().allTransaction.length < 10
@@ -339,7 +341,7 @@ class _DashBoardState extends State<DashBoard> {
                               ),
                             ),
                             title: Text(
-                              "${GiftAppBloc().allTransaction[index]['NAME']}  S/o ${GiftAppBloc().allTransaction[index]['FATHER_NAME']}",
+                              "${GiftAppBloc().allTransaction[index]['NAME']}",
                               style: TextStyle(
                                   color:
                                       Theme.of(context).textTheme.body2.color,

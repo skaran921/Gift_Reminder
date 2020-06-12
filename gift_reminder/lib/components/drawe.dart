@@ -4,6 +4,7 @@ import 'package:gift_reminder/components/customText.dart';
 import 'package:gift_reminder/components/custonAlertBox.dart';
 import 'package:gift_reminder/config/admin_token.dart';
 import 'package:gift_reminder/config/gift.dart';
+import 'package:gift_reminder/dashboard/profile/change_password.dart';
 import 'package:gift_reminder/dashboard/profile/edit_profile..dart';
 import 'package:gift_reminder/dashboard/transaction/searchTransaction.dart';
 import 'package:gift_reminder/dashboard/transaction/transactions.dart';
@@ -66,6 +67,18 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => EditProfile()));
+            },
+          ),
+          Divider(
+            thickness: 0.3,
+            color: Theme.of(context).textTheme.body2.color,
+          ),
+          ListTile(
+            title: CustomText(text: "Change Password"),
+            trailing: CustomIcon(icon: Icons.lock),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ChangePassword()));
             },
           ),
           Divider(

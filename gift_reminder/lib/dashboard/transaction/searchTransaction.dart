@@ -109,18 +109,18 @@ class SearchTransaction extends SearchDelegate {
                     ),
                   ),
                   title: Text(
-                    "${suggestionList[index]['NAME']} S/o ${suggestionList[index]['FATHER_NAME']}",
+                    "${suggestionList[index]['NAME']}",
                     style: TextStyle(
                         color: Theme.of(context).textTheme.body2.color,
-                        fontSize: 14.0),
+                        fontSize: 12.0),
                   ),
                   subtitle: Row(children: [
                     Icon(FontAwesomeIcons.rupeeSign),
                     SizedBox(
-                      width: 4.0,
+                      width: 1.0,
                     ),
                     CustomText(
-                      text: "${suggestionList[index]['AMOUNT']}/-",
+                      text: "${suggestionList[index]['AMOUNT']}.00",
                     )
                   ]),
                   children: [

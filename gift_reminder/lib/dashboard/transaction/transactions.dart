@@ -133,7 +133,7 @@ class _AllTransactionsState extends State<AllTransactions> {
                           ),
                         ),
                         title: Text(
-                          "${GiftAppBloc().allTransaction[index]['NAME']} S/o ${GiftAppBloc().allTransaction[index]['FATHER_NAME']}",
+                          "${GiftAppBloc().allTransaction[index]['NAME']}",
                           style: TextStyle(
                               color: Theme.of(context).textTheme.body2.color,
                               fontSize: 16.0),
@@ -141,14 +141,14 @@ class _AllTransactionsState extends State<AllTransactions> {
                         subtitle: Row(children: [
                           Icon(
                             FontAwesomeIcons.rupeeSign,
-                            size: 14.0,
+                            size: 12.0,
                           ),
                           SizedBox(
-                            width: 4.0,
+                            width: 1.0,
                           ),
                           CustomText(
                             text:
-                                "${GiftAppBloc().allTransaction[index]['AMOUNT']}/-",
+                                "${GiftAppBloc().allTransaction[index]['AMOUNT']}.00",
                           )
                         ]),
                         children: [
