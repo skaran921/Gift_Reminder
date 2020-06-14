@@ -7,9 +7,10 @@ header('Content-Type: application/json');
 if(isset($_POST["email"]) && isset($_POST["password"])){
      $email  = $_POST['email'];
      $password = $_POST['password'];
+     $status = "ACTIVE";
      include("./db.php");
-     $sql = $conn->prepare("SELECT * FROM admin WHERE ADMIN_EMAIL = ? AND ADMIN_PASSWORD = ?");
-     $sql->bind_param("ss", $email, $password);
+     $sql = $conn->prepare("SELECT * FROM admin WHERE ADMIN_EMAIL = ? AND ADMIN_PASSWORD = ? AND ADMIN_STATUS= ?");
+     $sql->bind_param("sss", $email, $password,$status);
      $sql->execute();
      $result = $sql->get_result();
      if($result->num_rows === 0){
