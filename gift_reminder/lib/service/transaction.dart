@@ -28,7 +28,7 @@ class TransactionService {
       var response = await http.post("${Gift.baseUrl}/insertTransaction.php",
           body: _transaction);
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse;
     } on HttpException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
@@ -44,9 +44,9 @@ class TransactionService {
       Map _data = {"admin_id": "$adminId"};
       var response =
           await http.post("${Gift.baseUrl}/getTransaction.php", body: _data);
-      print(response);
+      // print(response);
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse;
     } on HttpException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
@@ -64,9 +64,9 @@ class TransactionService {
       Map _data = {"admin_id": "$adminId", "transaction_id": "$transactionId"};
       var response =
           await http.post("${Gift.baseUrl}/deleteTransaction.php", body: _data);
-      print(response);
+      // print(response);
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse;
     } on HttpException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
@@ -103,13 +103,37 @@ class TransactionService {
       var response = await http.post("${Gift.baseUrl}/updateTransaction.php",
           body: _transaction);
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse;
     } on HttpException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
     } on SocketException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
     } catch (error) {
+      return {"msg": "$error", "error": "X"};
+    }
+  }
+
+  static Future searchTransaction(
+      {@required searchValue, @required searchBy, @required adminId}) async {
+    try {
+      Map _transaction = {
+        "search_by": '$searchBy',
+        "search_value": '$searchValue',
+        "admin_id": '$adminId',
+      };
+      var response =
+          await http.post("${Gift.baseUrl}/search.php", body: _transaction);
+      // print(response.body);
+      var jsonResponse = json.decode(response.body);
+      // print(jsonResponse);
+      return jsonResponse;
+    } on HttpException catch (error) {
+      return {"msg": "${error.message}", "error": "X"};
+    } on SocketException catch (error) {
+      return {"msg": "${error.message}", "error": "X"};
+    } catch (error, stacktrace) {
+      print(stacktrace);
       return {"msg": "$error", "error": "X"};
     }
   }

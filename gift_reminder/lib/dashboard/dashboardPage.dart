@@ -4,6 +4,7 @@ import 'package:gift_reminder/bloc/bloc.dart';
 import 'package:gift_reminder/components/custonAlertBox.dart';
 import 'package:gift_reminder/components/drawe.dart';
 import 'package:gift_reminder/config/gift.dart';
+import 'package:gift_reminder/dashboard/search/custom_search.dart';
 import 'package:gift_reminder/dashboard/transaction/addTransaction.dart';
 import 'package:gift_reminder/dashboard/dashboardScreen.dart';
 import 'package:gift_reminder/dashboard/profile/profile.dart';
@@ -34,6 +35,23 @@ class DashboardPage extends StatelessWidget {
                       ),
                       Text(
                         "Logout",
+                        style: TextStyle(
+                            color: Theme.of(context).textTheme.body2.color),
+                      ),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: "customSearch",
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(FontAwesomeIcons.searchengin),
+                      SizedBox(
+                        width: 4.0,
+                      ),
+                      Text(
+                        "Search",
                         style: TextStyle(
                             color: Theme.of(context).textTheme.body2.color),
                       ),
@@ -81,6 +99,9 @@ class DashboardPage extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => LoginScreen()));
                       });
+                } else if (value == "customSearch") {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CustomSearch()));
                 }
               },
             ),

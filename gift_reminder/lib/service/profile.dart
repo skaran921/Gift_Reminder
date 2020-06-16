@@ -21,9 +21,9 @@ class ProfileService {
       };
       var response =
           await http.post("${Gift.baseUrl}/editProfile.php", body: _data);
-      print(response);
+      // print(response);
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse;
     } on HttpException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
@@ -50,14 +50,14 @@ class ProfileService {
       var response =
           await http.post("${Gift.baseUrl}/changePassword.php", body: _data);
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse;
     } on HttpException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
     } on SocketException catch (error) {
       return {"msg": "${error.message}", "error": "X"};
-    } catch (error, stacktrace) {
-      print("$error $stacktrace");
+    } catch (error) {
+      // print("$error $stacktrace");
       return {"msg": "$error", "error": "X"};
     }
   }

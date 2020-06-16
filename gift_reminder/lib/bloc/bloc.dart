@@ -33,6 +33,19 @@ class GiftAppBloc extends Bloc<GiftAppEvent, GiftAppState> {
   // edit profile page
   bool isEditProfileLoading = false;
 
+  // custom search page
+
+  List searchData = [];
+  bool isSearchPageLoading = false;
+  String searchByValue = "NAME";
+
+  // createAccount
+  bool isCreateAccountPageLoading = false;
+
+  // forogtPassword
+  bool isForogotPasswordPageLoading = false;
+  bool isOTPLoading = false;
+
   @override
   GiftAppState get initialState => UnGiftAppState();
 

@@ -31,8 +31,8 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: CustomText(text: "Search"),
-            trailing: CustomIcon(icon: Icons.search),
+            title: const CustomText(text: "Search"),
+            trailing: const CustomIcon(icon: Icons.search),
             onTap: () {
               showSearch(context: context, delegate: SearchTransaction());
             },
@@ -46,24 +46,24 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AllTransactions()));
             },
-            title: CustomText(text: "All Transactions"),
-            trailing: CustomIcon(icon: Icons.library_books),
+            title: const CustomText(text: "All Transactions"),
+            trailing: const CustomIcon(icon: Icons.library_books),
           ),
           Divider(
             thickness: 0.3,
             color: Theme.of(context).textTheme.body2.color,
           ),
+          // ListTile(
+          //   title: CustomText(text: "Add Book"),
+          //   trailing: CustomIcon(icon: Icons.book),
+          // ),
+          // Divider(
+          //   thickness: 0.3,
+          //   color: Theme.of(context).textTheme.body2.color,
+          // ),
           ListTile(
-            title: CustomText(text: "Add Book"),
-            trailing: CustomIcon(icon: Icons.book),
-          ),
-          Divider(
-            thickness: 0.3,
-            color: Theme.of(context).textTheme.body2.color,
-          ),
-          ListTile(
-            title: CustomText(text: "Edit Profile"),
-            trailing: CustomIcon(icon: Icons.edit),
+            title: const CustomText(text: "Edit Profile"),
+            trailing: const CustomIcon(icon: Icons.edit),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => EditProfile()));
@@ -74,8 +74,8 @@ class MyDrawer extends StatelessWidget {
             color: Theme.of(context).textTheme.body2.color,
           ),
           ListTile(
-            title: CustomText(text: "Change Password"),
-            trailing: CustomIcon(icon: Icons.lock),
+            title: const CustomText(text: "Change Password"),
+            trailing: const CustomIcon(icon: Icons.lock),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ChangePassword()));
@@ -90,15 +90,15 @@ class MyDrawer extends StatelessWidget {
               CustomAlertBox.showConfirmBox(
                   context: context,
                   title: "Logout",
-                  content: Text("Are you sure you want to logout?"),
+                  content: const Text("Are you sure you want to logout?"),
                   onSure: () {
                     Gift.prefs.clear();
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => LoginScreen()));
                   });
             },
-            title: CustomText(text: "Logout"),
-            trailing: CustomIcon(icon: Icons.exit_to_app),
+            title: const CustomText(text: "Logout"),
+            trailing: const CustomIcon(icon: Icons.exit_to_app),
           ),
           ListTile(
             onTap: () {
@@ -112,15 +112,15 @@ class MyDrawer extends StatelessWidget {
                           child: CustomIcon(
                         icon: Icons.info,
                       )),
-                      Text("Design and develop by Karan Soni"),
-                      Text("v 1.0.0, June 2020")
+                      const Text("Design and develop by Karan Soni"),
+                      const Text("v 1.0.0, June 2020")
                     ],
                   ));
             },
-            title: CustomText(text: "Version"),
-            subtitle: CustomText(text: "1.0.0"),
-            leading: CustomIcon(icon: Icons.verified_user),
-            trailing: CustomIcon(
+            title: const CustomText(text: "Version"),
+            subtitle: const CustomText(text: "1.0.0"),
+            leading: const CustomIcon(icon: Icons.verified_user),
+            trailing: const CustomIcon(
               icon: Icons.info,
             ),
           ),

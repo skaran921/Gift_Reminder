@@ -82,9 +82,9 @@ class SearchTransaction extends SearchDelegate {
               child: Lottie.asset("assets/images/lottie/6552-search.json",
                   width: 100, height: 100, fit: BoxFit.cover)),
           SizedBox(
-            height: 4.0,
+            height: 8.0,
           ),
-          Text("Sorry, No Record Found!")
+          CustomText(text: "Sorry, No Record Found!")
         ],
       );
     }
@@ -115,7 +115,10 @@ class SearchTransaction extends SearchDelegate {
                         fontSize: 12.0),
                   ),
                   subtitle: Row(children: [
-                    Icon(FontAwesomeIcons.rupeeSign),
+                    Icon(
+                      FontAwesomeIcons.rupeeSign,
+                      size: 12.0,
+                    ),
                     SizedBox(
                       width: 1.0,
                     ),

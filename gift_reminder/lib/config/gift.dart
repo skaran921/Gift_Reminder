@@ -5,7 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Gift {
   // api
-  static const String baseUrl = "http://192.168.43.240/MyGift/api";
+
+  //static const String baseUrl = "http://192.168.43.240/MyGift/api";
+  static const String baseUrl =
+      "https://skaran921.000webhostapp.com/giftReminder/api";
 
   // texts
 

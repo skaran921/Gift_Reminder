@@ -11,8 +11,8 @@ class LoginService {
     try {
       var response = await http.post("${Gift.baseUrl}/login.php", body: _data);
       var jsonResponse = json.decode(response.body);
-      print(response);
-      print(jsonResponse);
+      // print(response);
+      // print(jsonResponse);
       return jsonResponse;
     } on HttpException catch (error) {
       return {"msg": "${error.message}", "error": "X"};

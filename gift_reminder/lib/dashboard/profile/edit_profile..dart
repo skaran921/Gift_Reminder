@@ -22,13 +22,38 @@ class _EditProfileState extends State<EditProfile> {
       TextEditingController(text: AdminToken.adminEmail);
   TextEditingController _passwordController = TextEditingController();
 
+  Future<bool> _onWillPop() async {
+    return await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Confirmation"),
+              content: Text("Are you sure you want to leave this page?"),
+              actions: [
+                FlatButton.icon(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    icon: Icon(Icons.close),
+                    label: Text('Close')),
+                FlatButton.icon(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    icon: Icon(Icons.check),
+                    label: Text('Sure'))
+              ],
+            ));
+  }
+
   Future _onSaveProfile(BuildContext ctx) async {
     FocusScope.of(ctx).unfocus();
     if (_editProfileFormKey.currentState.validate()) {
       _editProfileFormKey.currentState.save();
       GiftAppBloc().dispatch(IsEditProfileLoadingEvent(true));
-
-      ProfileService.updateProfile(
+      await ProfileService.updateProfile(
               adminId: AdminToken.adminId,
               fname: _firstNameController.text,
               lname: _lastNameController.text,
@@ -54,6 +79,7 @@ class _EditProfileState extends State<EditProfile> {
           AdminToken.adminFirstName = _firstNameController.text;
           AdminToken.adminLastName = _lastNameController.text;
           AdminToken.adminUpdateDate = DateTime.now().toString();
+          _passwordController.clear();
           Scaffold.of(ctx).showSnackBar(SnackBar(
             content: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -98,106 +124,112 @@ class _EditProfileState extends State<EditProfile> {
       appBar: AppBar(
         title: const Text("Edit Profile"),
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<GiftAppBloc, GiftAppState>(
-          bloc: _giftAppBloc,
-          builder: (context, currentState) {
-            return Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
-                  child: Form(
-                    key: _editProfileFormKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _firstNameController,
-                          decoration: const InputDecoration(
-                              labelText: "First Name",
-                              prefix: Padding(
-                                padding: EdgeInsets.only(right: 4.0),
-                                child: Icon(Icons.account_circle),
-                              )),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "First Name Required";
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _lastNameController,
-                          decoration: const InputDecoration(
-                              labelText: "Last Name",
-                              prefix: Padding(
-                                padding: EdgeInsets.only(right: 4.0),
-                                child: Icon(Icons.person),
-                              )),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Last Name Required";
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                              labelText: "Email",
-                              prefix: Padding(
-                                padding: EdgeInsets.only(right: 4.0),
-                                child: Icon(Icons.email),
-                              )),
-                          readOnly: true,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Email is Required";
-                            } else if (!value.contains("@")) {
-                              return "Not a valid email";
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                              labelText: "Current Password",
-                              prefix: Padding(
-                                padding: EdgeInsets.only(right: 4.0),
-                                child: Icon(Icons.lock),
-                              )),
-                          obscureText: true,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Current Password Required";
-                            }
-                            return null;
-                          },
-                        ),
-                        _giftAppBloc.isEditProfileLoading
-                            ? Padding(
-                                padding: EdgeInsets.all(4.0),
-                                child: CircularProgressIndicator(),
-                              )
-                            : Container(),
-                        FlatButton.icon(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 16.0),
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              _onSaveProfile(context);
+      body: WillPopScope(
+        onWillPop: _onWillPop,
+        child: SingleChildScrollView(
+          child: BlocBuilder<GiftAppBloc, GiftAppState>(
+            bloc: _giftAppBloc,
+            builder: (context, currentState) {
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    child: Form(
+                      key: _editProfileFormKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _firstNameController,
+                            decoration: const InputDecoration(
+                                labelText: "First Name",
+                                prefix: Padding(
+                                  padding: EdgeInsets.only(right: 4.0),
+                                  child: Icon(Icons.account_circle),
+                                )),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "First Name Required";
+                              }
+                              return null;
                             },
-                            icon: const Icon(Icons.save),
-                            label: const Text("Save"))
-                      ],
+                          ),
+                          TextFormField(
+                            controller: _lastNameController,
+                            decoration: const InputDecoration(
+                                labelText: "Last Name",
+                                prefix: Padding(
+                                  padding: EdgeInsets.only(right: 4.0),
+                                  child: Icon(Icons.person),
+                                )),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Last Name Required";
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                                labelText: "Email",
+                                prefix: Padding(
+                                  padding: EdgeInsets.only(right: 4.0),
+                                  child: Icon(Icons.email),
+                                )),
+                            readOnly: true,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Email is Required";
+                              } else if (!value.contains("@")) {
+                                return "Not a valid email";
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                                labelText: "Current Password",
+                                prefix: Padding(
+                                  padding: EdgeInsets.only(right: 4.0),
+                                  child: Icon(Icons.lock),
+                                )),
+                            obscureText: true,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Current Password Required";
+                              }
+                              return null;
+                            },
+                          ),
+                          _giftAppBloc.isEditProfileLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(4.0),
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container(),
+                          FlatButton.icon(
+                              disabledColor: Colors.indigo[100],
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              color: Theme.of(context).primaryColor,
+                              onPressed: _giftAppBloc.isEditProfileLoading
+                                  ? null
+                                  : () async {
+                                      await _onSaveProfile(context);
+                                    },
+                              icon: const Icon(Icons.save),
+                              label: const Text("Save"))
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

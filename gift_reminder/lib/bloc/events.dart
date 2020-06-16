@@ -94,7 +94,7 @@ class SetTransactionPageLoadingEvent extends GiftAppEvent {
   Future applyAsyncEvent({GiftAppState currentState, GiftAppBloc bloc}) async {
     try {
       bloc.isAddTransactionPageLoading = isLoading;
-      return InGiftAppState();
+      return InGiftAppDashBoardState();
     } catch (error) {
       return ErrorGiftAppState(error);
     }
@@ -276,6 +276,123 @@ class IsEditProfileLoadingEvent extends GiftAppEvent {
   }) async {
     try {
       bloc.isEditProfileLoading = isLoading;
+      return InGiftAppDashBoardState();
+    } catch (error) {
+      return ErrorGiftAppState(error);
+    }
+  }
+}
+
+// **************************************************Search page*******************************
+
+// isSearchPageLoading Event
+class IsSearchPageLoadingEvent extends GiftAppEvent {
+  final bool isLoading;
+
+  IsSearchPageLoadingEvent(this.isLoading);
+
+  @override
+  Future applyAsyncEvent({
+    GiftAppState currentState,
+    GiftAppBloc bloc,
+  }) async {
+    try {
+      bloc.isSearchPageLoading = isLoading;
+      return InGiftAppDashBoardState();
+    } catch (error) {
+      return ErrorGiftAppState(error);
+    }
+  }
+}
+
+// SetSearchPageData Event
+class SetSearchPageData extends GiftAppEvent {
+  final List data;
+  SetSearchPageData(this.data);
+
+  @override
+  Future applyAsyncEvent({
+    GiftAppState currentState,
+    GiftAppBloc bloc,
+  }) async {
+    try {
+      bloc.searchData = data ?? [];
+      return InGiftAppDashBoardState();
+    } catch (error) {
+      return ErrorGiftAppState(error);
+    }
+  }
+}
+
+// SetSearchByValue Event
+class SetSearchByValue extends GiftAppEvent {
+  final String value;
+  SetSearchByValue(this.value);
+
+  @override
+  Future applyAsyncEvent({
+    GiftAppState currentState,
+    GiftAppBloc bloc,
+  }) async {
+    try {
+      bloc.searchByValue = value ?? "NAME";
+      return InGiftAppDashBoardState();
+    } catch (error) {
+      return ErrorGiftAppState(error);
+    }
+  }
+}
+
+// isCreateAccountPageLoading Event
+class IsCreateAccountPageLoadingEvent extends GiftAppEvent {
+  final bool value;
+  IsCreateAccountPageLoadingEvent(this.value);
+
+  @override
+  Future applyAsyncEvent({
+    GiftAppState currentState,
+    GiftAppBloc bloc,
+  }) async {
+    try {
+      bloc.isCreateAccountPageLoading = value ?? false;
+      return InGiftAppDashBoardState();
+    } catch (error) {
+      return ErrorGiftAppState(error);
+    }
+  }
+}
+
+// isForogotPasswordPageLoading Event
+class IsForogotPasswordPageLoadingEvent extends GiftAppEvent {
+  final bool value;
+  IsForogotPasswordPageLoadingEvent(this.value);
+
+  @override
+  Future applyAsyncEvent({
+    GiftAppState currentState,
+    GiftAppBloc bloc,
+  }) async {
+    try {
+      bloc.isForogotPasswordPageLoading = value ?? false;
+      return InGiftAppDashBoardState();
+    } catch (error) {
+      return ErrorGiftAppState(error);
+    }
+  }
+}
+
+// IsOTPLoading Event
+class IsOTPLoadingEvent extends GiftAppEvent {
+  final bool value;
+  IsOTPLoadingEvent(this.value);
+
+  @override
+  Future applyAsyncEvent({
+    GiftAppState currentState,
+    GiftAppBloc bloc,
+  }) async {
+    try {
+      bloc.isForogotPasswordPageLoading = value ?? false;
       return InGiftAppDashBoardState();
     } catch (error) {
       return ErrorGiftAppState(error);

@@ -58,7 +58,7 @@ class _AddTransactionState extends State<AddTransaction> {
             ));
   }
 
-  _onAddTransaction(BuildContext ctx) {
+  Future _onAddTransaction(BuildContext ctx) async {
     FocusScope.of(context).unfocus();
 
     // ***if book value not selected
@@ -71,10 +71,11 @@ class _AddTransactionState extends State<AddTransaction> {
     }
 
     if (_addTransactionFormKey.currentState.validate()) {
+      widget._giftAppBloc.dispatch(SetTransactionPageLoadingEvent(true));
       //  insertTransaction
       Map admin = jsonDecode(Gift.prefs.get(Gift.loginTokenPref));
 
-      TransactionService.insertTransaction(
+      await TransactionService.insertTransaction(
               name: _nameController.text,
               fname: _fnameController.text,
               amount: _amountController.text.trim(),
@@ -134,6 +135,7 @@ class _AddTransactionState extends State<AddTransaction> {
           ));
         }
       });
+      widget._giftAppBloc.dispatch(SetTransactionPageLoadingEvent(false));
     } else {
       Scaffold.of(ctx).showSnackBar(SnackBar(
         content: Row(
@@ -305,14 +307,26 @@ class _AddTransactionState extends State<AddTransaction> {
                         SizedBox(
                           height: 8.0,
                         ),
+                        widget._giftAppBloc.isAddTransactionPageLoading
+                            ? Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(4.0),
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : Container(),
                         Center(
                           child: FlatButton.icon(
+                            disabledColor: Colors.indigo[100],
                             color: Theme.of(context).primaryColor,
                             icon: Icon(Icons.add),
                             label: Text("Add Transaction"),
-                            onPressed: () {
-                              _onAddTransaction(context);
-                            },
+                            onPressed:
+                                widget._giftAppBloc.isAddTransactionPageLoading
+                                    ? null
+                                    : () {
+                                        _onAddTransaction(context);
+                                      },
                           ),
                         )
                       ],

@@ -4,6 +4,7 @@ class CustomAlertBox {
   CustomAlertBox.showConfirmBox(
       {@required BuildContext context,
       @required Widget content,
+      bool isLoading = false,
       String title,
       @required Function onSure}) {
     showDialog(
@@ -19,12 +20,13 @@ class CustomAlertBox {
                       Navigator.pop(context, false);
                     },
                     icon: Icon(Icons.close),
-                    label: Text('Cancel')),
+                    label: const Text('Cancel')),
                 FlatButton.icon(
+                    disabledColor: Colors.indigo[200],
                     color: Theme.of(context).primaryColor,
-                    onPressed: onSure,
+                    onPressed: isLoading ? null : onSure,
                     icon: Icon(Icons.check),
-                    label: Text('Sure'))
+                    label: const Text('Sure'))
               ],
             ));
   }
@@ -46,7 +48,7 @@ class CustomAlertBox {
                       Navigator.pop(context);
                     },
                     icon: Icon(Icons.close),
-                    label: Text('Close')),
+                    label: const Text('Close')),
               ],
             ));
   }

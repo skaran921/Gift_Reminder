@@ -4,6 +4,8 @@ import 'package:gift_reminder/bloc/bloc.dart';
 import 'package:gift_reminder/bloc/events.dart';
 import 'package:gift_reminder/config/admin_token.dart';
 import 'package:gift_reminder/config/gift.dart';
+import 'package:gift_reminder/create_account/create_account.dart';
+import 'package:gift_reminder/create_account/forgot_password.dart';
 import 'package:gift_reminder/dashboard/dashboardPage.dart';
 import 'package:gift_reminder/service/login.dart';
 
@@ -23,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     FocusScope.of(context).unfocus();
     if (_loginFormKey.currentState.validate()) {
       _loginFormKey.currentState.save();
-      LoginService.authenticate(
+      await LoginService.authenticate(
               email: _emailController.text, password: _passwordController.text)
           .then((value) {
         if (value['error'] == "X") {
@@ -76,7 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Text(
                       "Gift Reminder",
-                      style: TextStyle(fontSize: 30.0),
+                      style: TextStyle(
+                          fontSize: 30.0,
+                          color: Theme.of(context).textTheme.body2.color),
                     ),
                   ],
                 ),
@@ -103,7 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             "Login",
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(
+                                fontSize: 25.0,
+                                color: Theme.of(context).textTheme.body2.color),
                           ),
                           SizedBox(
                             width: 10.0,
@@ -147,6 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 10.0,
                       ),
                       FlatButton.icon(
+                        disabledColor: Colors.indigo[100],
                         padding: EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 16.0),
                         color: Theme.of(context).primaryColor,
@@ -159,8 +166,52 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                               color: Color(0xFFebebeb), fontSize: 20.0),
                         ),
-                        onPressed: _onLogin,
-                      )
+                        onPressed:
+                            GiftAppBloc().isLoginLoading ? null : _onLogin,
+                      ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      FlatButton.icon(
+                          disabledColor: Colors.indigo[100],
+                          onPressed: GiftAppBloc().isLoginLoading
+                              ? null
+                              : () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CreateAccount()));
+                                },
+                          icon: Icon(
+                            Icons.add_circle,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          label: Text(
+                            "Create Account",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          )),
+                      FlatButton.icon(
+                          disabledColor: Colors.indigo[100],
+                          onPressed: GiftAppBloc().isLoginLoading
+                              ? null
+                              : () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForgotPassword()));
+                                },
+                          icon: Icon(
+                            Icons.lock_open,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          label: Text(
+                            "Forgot you password? tap here",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ))
                     ],
                   ),
                 ),

@@ -60,6 +60,32 @@ class _EditTransactionState extends State<EditTransaction> {
     _phoneController.text = "${widget.phone}";
   }
 
+  Future<bool> _onWillPop() async {
+    return await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Confirmation"),
+              content: Text("Are you sure you want to leave this page?"),
+              actions: [
+                FlatButton.icon(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    icon: Icon(Icons.close),
+                    label: Text('Close')),
+                FlatButton.icon(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    icon: Icon(Icons.check),
+                    label: Text('Sure'))
+              ],
+            ));
+  }
+
   Future _onUpdate() async {
     FocusScope.of(context).unfocus();
     // ***if book value not selected
@@ -163,6 +189,7 @@ class _EditTransactionState extends State<EditTransaction> {
                     ),
                   ),
                   Form(
+                    onWillPop: _onWillPop,
                     key: _editTransactionFormKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -301,10 +328,14 @@ class _EditTransactionState extends State<EditTransaction> {
           ),
           floatingActionButton: FloatingActionButton(
             heroTag: "updateBtn",
-            onPressed: () {
-              _onUpdate();
-            },
-            child: Icon(Icons.save),
+            onPressed: _giftAppBloc.isUpdateTransactionLoading
+                ? null
+                : () {
+                    _onUpdate();
+                  },
+            child: _giftAppBloc.isUpdateTransactionLoading
+                ? CircularProgressIndicator()
+                : Icon(Icons.save),
           ),
         );
       },

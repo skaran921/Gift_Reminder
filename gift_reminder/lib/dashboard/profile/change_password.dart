@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gift_reminder/components/custonAlertBox.dart';
 import 'package:gift_reminder/config/admin_token.dart';
-import 'package:gift_reminder/config/gift.dart';
 import 'package:gift_reminder/service/profile.dart';
 import 'package:lottie/lottie.dart';
 
