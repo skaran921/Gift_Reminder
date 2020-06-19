@@ -14,10 +14,14 @@ if(
          $sql = "SELECT * from admin where  ADMIN_ID='$admin_id'";
       $result =$conn->query($sql);
       if($result->num_rows){
-            if($search_by === "AMOUNT" || $search_by ==="PAGE_NUMBER"){
-                $search_sql = "SELECT * FROM transaction WHERE $search_by ='$search_value' AND ADMIN_ID='$admin_id' AND STATUS='Active' ORDER BY NAME ";
+            if($search_by === "AMOUNT" || $search_by ==="PAGE_NUMBER" || $search_by ==="BOOK_ID"){
+                $search_sql = "SELECT transaction.TRANSACTION_ID,transaction.NAME,transaction.FATHER_NAME,transaction.ADDRESS,transaction.PHONE,transaction.AMOUNT,transaction.PAGE_NUMBER,transaction.BOOK_ID,transaction.ADMIN_ID,transaction.CREATE_DATE,transaction.UPDATE_DATE,transaction.STATUS, books.BOOK_NUMBER FROM transaction 
+                  left join books on transaction.BOOK_ID= books.BOOK_ID 
+                  WHERE   transaction.$search_by = '$search_value' AND  transaction.ADMIN_ID='$admin_id' AND STATUS='ACTIVE' GROUP by TRANSACTION_ID ORDER BY NAME";
             }else{
-                $search_sql = "SELECT * FROM transaction WHERE $search_by LIKE '%$search_value%' AND ADMIN_ID='$admin_id' AND STATUS='Active' ORDER BY NAME";
+                $search_sql = "SELECT transaction.TRANSACTION_ID,transaction.NAME,transaction.FATHER_NAME,transaction.ADDRESS,transaction.PHONE,transaction.AMOUNT,transaction.PAGE_NUMBER,transaction.BOOK_ID,transaction.ADMIN_ID,transaction.CREATE_DATE,transaction.UPDATE_DATE,transaction.STATUS, books.BOOK_NUMBER FROM transaction 
+                  left join books on transaction.BOOK_ID= books.BOOK_ID 
+                  WHERE   transaction.$search_by LIKE '%$search_value%' AND  transaction.ADMIN_ID='$admin_id' AND STATUS='ACTIVE' GROUP by TRANSACTION_ID ORDER BY NAME";
                 
             }
             $search_result = $conn->query($search_sql);
